@@ -1,9 +1,8 @@
 import { createLogger, format, transports } from 'winston';
 
-// custom log display format
 const customFormat = format.printf(
-    ({ timestamp, level, stack, message, context }) => {
-        return `${timestamp} - ${level}: [${context}] ${message || stack}`;
+    ({ timestamp, level, stack, message }) => {
+        return `${timestamp} [${level}] ${message} ${stack ? '\n' + stack : ''}`;
     },
 );
 
@@ -54,4 +53,4 @@ const prodLogger = {
 const instanceLogger =
     process.env.ENV === 'production' ? prodLogger : devLogger;
 
-export const instance = createLogger(instanceLogger);
+export const logger = createLogger(instanceLogger);
