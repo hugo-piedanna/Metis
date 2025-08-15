@@ -1,8 +1,8 @@
 import { GoneException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateCategoryDto } from '@/resources/categories/dto/create-category.dto';
+import { UpdateCategoryDto } from '@/resources/categories/dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from './entities/category.entity';
+import { Category } from '@/resources/categories/entities/category.entity';
 import { ILike, Repository } from 'typeorm';
 
 @Injectable()

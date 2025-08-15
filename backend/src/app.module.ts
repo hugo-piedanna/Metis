@@ -4,9 +4,9 @@ import { AppService } from '@/app.service';
 import { Logger } from 'winston';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { CategoriesModule } from './resources/categories/categories.module';
-import { ProductsModule } from './resources/products/products.module';
-import { LotsModule } from './resources/lots/lots.module';
+import { CategoriesModule } from '@/resources/categories/categories.module';
+import { ProductsModule } from '@/resources/products/products.module';
+import { LotsModule } from '@/resources/lots/lots.module';
 
 @Module({
   imports: [

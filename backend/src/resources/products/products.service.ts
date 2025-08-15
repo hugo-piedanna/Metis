@@ -1,10 +1,10 @@
-import { BadRequestException, GoneException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { GoneException, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateProductDto } from '@/resources/products/dto/create-product.dto';
+import { UpdateProductDto } from '@/resources/products/dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product, ProductType } from './entities/product.entity';
-import { Category } from '../categories/entities/category.entity';
-import { Lot } from '../lots/entities/lot.entity';
+import { Product, ProductType } from '@/resources/products/entities/product.entity';
+import { Category } from '@/resources/categories/entities/category.entity';
+import { Lot } from '@/resources/lots/entities/lot.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

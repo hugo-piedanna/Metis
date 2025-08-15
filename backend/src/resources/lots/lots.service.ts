@@ -1,11 +1,11 @@
 import { BadRequestException, GoneException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateLotDto } from './dto/create-lot.dto';
-import { UpdateLotDto } from './dto/update-lot.dto';
+import { CreateLotDto } from '@/resources/lots/dto/create-lot.dto';
+import { UpdateLotDto } from '@/resources/lots/dto/update-lot.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product, ProductType } from '../products/entities/product.entity';
-import { Lot } from './entities/lot.entity';
+import { Product, ProductType } from '@/resources/products/entities/product.entity';
+import { Lot } from '@/resources/lots/entities/lot.entity';
 import { Repository } from 'typeorm';
-import { ProductsService } from '../products/products.service';
+import { ProductsService } from '@/resources/products/products.service';
 
 @Injectable()
 export class LotsService {

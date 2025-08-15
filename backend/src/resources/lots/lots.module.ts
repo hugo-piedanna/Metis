@@ -1,10 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { LotsService } from './lots.service';
-import { LotsController } from './lots.controller';
+import { LotsService } from '@/resources/lots/lots.service';
+import { LotsController } from '@/resources/lots/lots.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Lot } from './entities/lot.entity';
-import { Product } from '../products/entities/product.entity';
-import { ProductsModule } from '../products/products.module';
+import { Lot } from '@/resources/lots/entities/lot.entity';
+import { Product } from '@/resources/products/entities/product.entity';
+import { ProductsModule } from '@/resources/products/products.module';
 
 @Module({
   imports: [

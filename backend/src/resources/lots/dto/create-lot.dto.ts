@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsNumber, IsUUID, Min } from "class-validator";
+import { IsDateString, IsNumber, Min } from "class-validator";
 
 export class CreateLotDto {
 

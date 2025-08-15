@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateLotDto } from './create-lot.dto';
+import { CreateLotDto } from '@/resources/lots/dto/create-lot.dto';
 
-export class UpdateLotDto extends PartialType(CreateLotDto) {}
+export class UpdateLotDto extends PartialType(CreateLotDto) { }
