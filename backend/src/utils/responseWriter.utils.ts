@@ -1,8 +1,6 @@
-import { BaseDto } from "../model/base.dto";
-
 interface Response {
     message: string;
-    data: BaseDto | BaseDto[] | null;
+    data: any | any[] | null;
     errors: Error[];
 }
 
@@ -14,7 +12,7 @@ interface Error {
 /**
  * A utility class to build and manage API responses.
  */
-export default class ResponseWriter {
+export default class ResponseWriter<T> {
 
     response: Response;
 
@@ -31,17 +29,17 @@ export default class ResponseWriter {
         return this;
     }
 
-    writeData(data: BaseDto | BaseDto[] | null): this {
+    writeData(data: T | T[] | null): this {
         this.response.data = data;
         return this;
     }
 
-    addError(code: string, type: "critical" | "informative" | "warning"): this {
-        this.response.errors.push({ code, type });
+    addErrors(errors: { code: string; type: "critical" | "informative" | "warning" }[]): this {
+        this.response.errors.push(...errors);
         return this;
     }
 
-    writeResponse(): string {
-        return JSON.stringify(this.response);
+    writeResponse() {
+        return this.response;
     }
 }
