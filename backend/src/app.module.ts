@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CategoriesModule } from '@/resources/categories/categories.module';
 import { ProductsModule } from '@/resources/products/products.module';
 import { LotsModule } from '@/resources/lots/lots.module';
+import { UnitsModule } from '@/resources/units/units.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { LotsModule } from '@/resources/lots/lots.module';
     }),
     CategoriesModule,
     ProductsModule,
-    LotsModule
+    LotsModule,
+    UnitsModule
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
