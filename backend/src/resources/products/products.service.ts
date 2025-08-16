@@ -6,6 +6,7 @@ import { Product, ProductType } from '@/resources/products/entities/product.enti
 import { Category } from '@/resources/categories/entities/category.entity';
 import { Lot } from '@/resources/lots/entities/lot.entity';
 import { Repository } from 'typeorm';
+import { Unit } from '@/resources/units/entities/unit.entity';
 
 @Injectable()
 export class ProductsService {
@@ -14,6 +15,7 @@ export class ProductsService {
     @InjectRepository(Product) private readonly productRepo: Repository<Product>,
     @InjectRepository(Category) private readonly categoryRepo: Repository<Category>,
     @InjectRepository(Lot) private readonly lotRepo: Repository<Lot>,
+    @InjectRepository(Unit) private readonly unitRepo: Repository<Unit>,
   ) { }
 
   async create(dto: CreateProductDto) {
@@ -35,7 +37,8 @@ export class ProductsService {
     const qb = this.productRepo
       .createQueryBuilder('p')
       .leftJoinAndSelect('p.category', 'c')
-      .leftJoinAndSelect('p.lots', 'l');
+      .leftJoinAndSelect('p.lots', 'l')
+      .leftJoinAndSelect('p.unit', 'u');
 
     if (search) qb.andWhere('p.name ILIKE :s', { s: `%${search}%` });
     if (categoryId) qb.andWhere('c.id = :cid', { cid: categoryId });
@@ -50,7 +53,7 @@ export class ProductsService {
   async findOne(id: string) {
     const prod = await this.productRepo.findOne({
       where: { id },
-      relations: ['category', 'lots'],
+      relations: ['category', 'lots', 'unit'],
     });
 
     if (!prod) throw new NotFoundException(`Product ${id} not found`);
@@ -67,6 +70,18 @@ export class ProductsService {
       const category = await this.categoryRepo.findOne({ where: { id: dto.categoryId } });
       if (!category) throw new NotFoundException('Category not found');
       prod.category = category;
+    }
+
+    if (dto.categoryId) {
+      const category = await this.categoryRepo.findOne({ where: { id: dto.categoryId } });
+      if (!category) throw new NotFoundException('Category not found');
+      prod.category = category;
+    }
+
+    if (dto.unitId) {
+      const unit = await this.unitRepo.findOne({ where: { id: dto.unitId } });
+      if (!unit) throw new NotFoundException('Unit not found');
+      prod.unit = unit;
     }
 
     const saved = await this.productRepo.save(prod);
@@ -89,14 +104,14 @@ export class ProductsService {
     return { message: `Product "${restored.name}" restored`, data: restored };
   }
 
-  async updateTotalQuantity(productId: string): Promise<Product> {
+  async updateQuantity(productId: string): Promise<Product> {
     const prod = await this.productRepo.findOne({ where: { id: productId } });
     if (!prod) throw new NotFoundException('Product not found');
     if (prod.type !== ProductType.FOOD) return;
 
     const lots = await this.lotRepo.find({ where: { product: { id: productId } } });
     const total = lots.reduce((acc, l) => acc + (l.quantity || 0), 0);
-    prod.totalQuantity = total;
+    prod.quantity = total;
     const saved = await this.productRepo.save(prod);
     return saved;
   }
