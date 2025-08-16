@@ -1,6 +1,7 @@
 import { BaseEntity } from "@/core/entity/base.entity";
 import { Category } from "@/resources/categories/entities/category.entity";
 import { Lot } from "@/resources/lots/entities/lot.entity";
+import { Unit } from "@/resources/units/entities/unit.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 export enum ProductType {
@@ -21,8 +22,13 @@ export class Product extends BaseEntity {
     type: ProductType;
 
     @Column({ type: 'float', default: 0 })
-    totalQuantity: number;
+    quantity: number;
+
+    @ManyToOne(() => Unit, (unit) => unit.products, { onDelete: 'SET NULL', nullable: true })
+    @JoinColumn({ name: 'unit_id' })
+    unit: Unit;
 
     @OneToMany(() => Lot, (lot) => lot.product)
     lots: Lot[];
+
 }

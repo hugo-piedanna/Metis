@@ -31,7 +31,7 @@ export class LotsService {
     });
 
     const saved = await this.lotRepo.save(entity);
-    const prod = await this.productsService.updateTotalQuantity(productId);
+    const prod = await this.productsService.updateQuantity(productId);
     saved.product = prod;
 
     return { message: `Lot created for product "${product.name}"`, data: saved };
@@ -75,7 +75,7 @@ export class LotsService {
     }
 
     const saved = await this.lotRepo.save(lot);
-    const prod = await this.productsService.updateTotalQuantity(productId);
+    const prod = await this.productsService.updateQuantity(productId);
     saved.product = prod;
 
     return { message: 'Lot updated', data: saved };
@@ -84,7 +84,7 @@ export class LotsService {
   async remove(productId: string, id: string) {
     const { data: lot } = await this.findOne(productId, id);
     await this.lotRepo.softDelete(lot.id);
-    await this.productsService.updateTotalQuantity(productId);
+    await this.productsService.updateQuantity(productId);
 
     return { message: 'Lot deleted', data: null };
   }
@@ -94,7 +94,7 @@ export class LotsService {
     const restored = await this.lotRepo.findOne({ where: { id }, relations: ['product'] });
     if (!restored) throw new NotFoundException(`Lot ${id} not found after restore`);
 
-    const prod = await this.productsService.updateTotalQuantity(productId);
+    const prod = await this.productsService.updateQuantity(productId);
     restored.product = prod;
 
     return { message: 'Lot restored', data: restored };
