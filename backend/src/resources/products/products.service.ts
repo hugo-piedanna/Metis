@@ -22,9 +22,19 @@ export class ProductsService {
     const category = await this.categoryRepo.findOne({ where: { id: dto.categoryId } });
     if (!category) throw new NotFoundException('Category not found');
 
+    let unit: Unit | undefined;
+    if (dto.unitId) {
+      const found = await this.unitRepo.findOne({ where: { id: dto.unitId } });
+      if (!found) throw new NotFoundException('Unit not found');
+      unit = found;
+    }
+
     const entity = this.productRepo.create({
-      ...dto,
-      category
+      name: dto.name,
+      type: dto.type,
+      quantity: dto.quantity,
+      category,
+      ...(unit ? { unit } : {}),
     });
 
     const saved = await this.productRepo.save(entity);
@@ -54,6 +64,7 @@ export class ProductsService {
     const prod = await this.productRepo.findOne({
       where: { id },
       relations: ['category', 'lots', 'unit'],
+      withDeleted: true,
     });
 
     if (!prod) throw new NotFoundException(`Product ${id} not found`);
@@ -64,22 +75,17 @@ export class ProductsService {
 
   async update(id: string, dto: UpdateProductDto) {
     const { data: prod } = await this.findOne(id);
-    Object.assign(prod, dto);
+    const { categoryId, unitId, ...rest } = dto;
+    Object.assign(prod, rest);
 
-    if (dto.categoryId) {
-      const category = await this.categoryRepo.findOne({ where: { id: dto.categoryId } });
+    if (categoryId) {
+      const category = await this.categoryRepo.findOne({ where: { id: categoryId } });
       if (!category) throw new NotFoundException('Category not found');
       prod.category = category;
     }
 
-    if (dto.categoryId) {
-      const category = await this.categoryRepo.findOne({ where: { id: dto.categoryId } });
-      if (!category) throw new NotFoundException('Category not found');
-      prod.category = category;
-    }
-
-    if (dto.unitId) {
-      const unit = await this.unitRepo.findOne({ where: { id: dto.unitId } });
+    if (unitId) {
+      const unit = await this.unitRepo.findOne({ where: { id: unitId } });
       if (!unit) throw new NotFoundException('Unit not found');
       prod.unit = unit;
     }

@@ -1,4 +1,4 @@
-import { IsEmpty, IsEnum, IsNotEmpty, IsNumber, IsString, IsUUID, Min } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min } from "class-validator";
 import { ProductType } from "@/resources/products/entities/product.entity";
 
 export class CreateProductDto {
@@ -10,6 +10,7 @@ export class CreateProductDto {
     @IsNotEmpty()
     categoryId: string;
 
+    @IsOptional()
     @IsUUID()
     unitId?: string;
 
