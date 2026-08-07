@@ -8,10 +8,18 @@ describe('UnitsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UnitsController],
-      providers: [UnitsService],
+      providers: [
+        {
+          provide: UnitsService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
-    controller = module.get<UnitsController>(UnitsController);
+    controller = module.get(UnitsController);
   });
 
   it('should be defined', () => {

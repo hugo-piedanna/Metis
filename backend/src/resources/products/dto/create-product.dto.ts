@@ -1,23 +1,32 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min } from "class-validator";
-import { ProductType } from "@/resources/products/entities/product.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
+import { ProductType } from '@/resources/products/entities/product.entity';
+import { CreateStockDto } from '@/resources/stocks/dto/create-stock.dto';
 
 export class CreateProductDto {
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+  @ApiProperty({ example: 'Pâtes' })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsUUID()
-    @IsNotEmpty()
-    categoryId: string;
+  @ApiProperty()
+  @IsUUID()
+  @IsNotEmpty()
+  categoryId: string;
 
-    @IsOptional()
-    @IsUUID()
-    unitId?: string;
+  @ApiProperty({ enum: ProductType })
+  @IsEnum(ProductType)
+  type: ProductType;
 
-    @IsEnum(ProductType)
-    type: ProductType;
-
-    @IsNumber()
-    @Min(0)
-    quantity: number;
+  @ApiProperty({ type: CreateStockDto })
+  @ValidateNested()
+  @Type(() => CreateStockDto)
+  initialStock: CreateStockDto;
 }

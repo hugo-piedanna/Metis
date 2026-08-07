@@ -10,12 +10,13 @@ API NestJS de [Metis](../README.md), l’app de gestion de stocks domestiques.
 
 ## Ressources
 
-| Route         | Rôle                                      |
-| ------------- | ----------------------------------------- |
-| `/categories` | Grouper les produits                      |
-| `/products`   | Items suivis (food / equipment)           |
-| `/lots`       | Lots / quantités par produit              |
-| `/units`      | Unités de mesure (kg, pièce, L, …)        |
+| Route                         | Rôle                                              |
+| ----------------------------- | ------------------------------------------------- |
+| `/categories`                 | Grouper les produits                              |
+| `/products`                   | Fiches produits (food / equipment) + totaux       |
+| `/products/:id/stocks`        | Lignes de stock (qty + unité + expiration?)       |
+| `/units`                      | Catalogue d’unités (lecture seule, seed)          |
+| `/docs`                       | Swagger / OpenAPI                                 |
 
 ## Démarrage local
 

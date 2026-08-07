@@ -12,10 +12,9 @@ import { UnitsSeed } from '@/seeds/units.seed';
   exports: [UnitsService],
 })
 export class UnitsModule implements OnModuleInit {
+  constructor(private readonly unitsSeed: UnitsSeed) {}
 
-  constructor(private readonly unitsSeed: UnitsSeed) { }
-
-  onModuleInit() {
-    this.unitsSeed.init();
+  async onModuleInit() {
+    await this.unitsSeed.init();
   }
 }

@@ -7,11 +7,10 @@ import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
-
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
-  ) { }
+  ) {}
 
   async create(dto: CreateCategoryDto) {
     const created = this.categoryRepo.create(dto);
@@ -40,7 +39,8 @@ export class CategoriesService {
     });
 
     if (!cat) throw new NotFoundException(`Category ${id} not found`);
-    if (cat.deletedAt) throw new GoneException(`Category ${id} has been deleted`);
+    if (cat.deletedAt)
+      throw new GoneException(`Category ${id} has been deleted`);
 
     return { message: 'Category retrieved successfully', data: cat };
   }
@@ -63,7 +63,8 @@ export class CategoriesService {
   async restore(id: string) {
     await this.categoryRepo.restore(id);
     const restored = await this.categoryRepo.findOne({ where: { id } });
-    if (!restored) throw new NotFoundException(`Category ${id} not found after restore`);
+    if (!restored)
+      throw new NotFoundException(`Category ${id} not found after restore`);
     return { message: `Category "${restored.name}" restored`, data: restored };
   }
 }

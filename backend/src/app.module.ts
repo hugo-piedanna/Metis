@@ -6,26 +6,29 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CategoriesModule } from '@/resources/categories/categories.module';
 import { ProductsModule } from '@/resources/products/products.module';
-import { LotsModule } from '@/resources/lots/lots.module';
+import { StocksModule } from '@/resources/stocks/stocks.module';
 import { UnitsModule } from '@/resources/units/units.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: ['.env', '../.env'],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.POSTGRES_URL,
       autoLoadEntities: true,
-      synchronize: process.env.ENV !== 'production',
+      synchronize: false,
+      migrations: [__dirname + '/migrations/*{.ts,.js}'],
+      migrationsRun: true,
     }),
     CategoriesModule,
     ProductsModule,
-    LotsModule,
-    UnitsModule
+    StocksModule,
+    UnitsModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
 })
-export class AppModule { }
+export class AppModule {}

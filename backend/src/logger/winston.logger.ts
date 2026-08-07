@@ -1,56 +1,54 @@
 import { createLogger, format, transports } from 'winston';
 
-const customFormat = format.printf(
-    ({ timestamp, level, stack, message }) => {
-        return `${timestamp} [${level}] ${message} ${stack ? '\n' + stack : ''}`;
-    },
-);
+const customFormat = format.printf(({ timestamp, level, stack, message }) => {
+  return `${timestamp} [${level}] ${message} ${stack ? '\n' + stack : ''}`;
+});
 
 const options = {
-    errorFile: {
-        filename: 'logger/logs/error.log',
-        level: 'error',
-    },
-    combineFile: {
-        filename: 'logger/logs/combine.log',
-        level: 'info',
-    },
-    console: {
-        level: 'silly',
-    },
+  errorFile: {
+    filename: 'logger/logs/error.log',
+    level: 'error',
+  },
+  combineFile: {
+    filename: 'logger/logs/combine.log',
+    level: 'info',
+  },
+  console: {
+    level: 'silly',
+  },
 };
 
 // for development environment
 const devLogger = {
-    format: format.combine(
-        format.timestamp({
-            format: 'YYYY-MM-DD hh:mm:ss.SSS A',
-        }),
-        format.colorize({ all: true }),
-        format.align(),
-        format.errors({ stack: true }),
-        customFormat,
-    ),
-    transports: [new transports.Console(options.console)],
+  format: format.combine(
+    format.timestamp({
+      format: 'YYYY-MM-DD hh:mm:ss.SSS A',
+    }),
+    format.colorize({ all: true }),
+    format.align(),
+    format.errors({ stack: true }),
+    customFormat,
+  ),
+  transports: [new transports.Console(options.console)],
 };
 
 // for production environment
 const prodLogger = {
-    format: format.combine(
-        format.timestamp({
-            format: 'YYYY-MM-DD hh:mm:ss.SSS A',
-        }),
-        format.errors({ stack: true }),
-        format.json(),
-    ),
-    transports: [
-        new transports.File(options.errorFile),
-        new transports.File(options.combineFile),
-    ],
+  format: format.combine(
+    format.timestamp({
+      format: 'YYYY-MM-DD hh:mm:ss.SSS A',
+    }),
+    format.errors({ stack: true }),
+    format.json(),
+  ),
+  transports: [
+    new transports.File(options.errorFile),
+    new transports.File(options.combineFile),
+  ],
 };
 
 // export log instance based on the current environment
 const instanceLogger =
-    process.env.ENV === 'production' ? prodLogger : devLogger;
+  process.env.ENV === 'production' ? prodLogger : devLogger;
 
 export const logger = createLogger(instanceLogger);
