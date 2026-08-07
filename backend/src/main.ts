@@ -23,8 +23,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  await app.listen(process.env.INTERNAL_API_PORT);
+  await app.listen(9000);
 
-  console.log('Metis API running on port:', process.env.INTERNAL_API_PORT);
+  console.log('Metis API running on port:', 9000);
 }
 bootstrap();

@@ -70,7 +70,7 @@ POSTGRES_URL=postgresql://metis:metis@postgres:5432/metis
 docker compose up --build
 ```
 
-This starts PostgreSQL and the NestJS API in watch mode. The API listens on `INTERNAL_API_PORT` inside the container and is published on `API_PORT` on the host.
+This starts PostgreSQL and the NestJS API in watch mode.
 
 ### 3. (Optional) Run the API locally
 
@@ -103,9 +103,6 @@ Template: [`.env.exemple`](.env.exemple)
 | `POSTGRES_DB`       | Database name                                    |
 | `POSTGRES_PORT`     | Host port mapped to Postgres                     |
 | `POSTGRES_URL`      | Full connection URL used by TypeORM              |
-| `API_PORT`          | Host port for the API                            |
-| `INTERNAL_API_PORT` | Port the Nest app listens on inside the container|
-| `BACKEND_URL`       | Public/base URL of the API                       |
 | `ENV`               | Environment (`development`, `production`, …)     |
 
 In development, TypeORM `synchronize` is enabled when `ENV` is not `production`.
